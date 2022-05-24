@@ -10,10 +10,54 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_24_053358) do
+ActiveRecord::Schema.define(version: 2022_05_24_134416) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "street"
+    t.string "town"
+    t.string "zip_code"
+    t.string "state"
+    t.string "country"
+    t.bigint "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_addresses_on_person_id"
+  end
+
+  create_table "emails", force: :cascade do |t|
+    t.string "email_address"
+    t.text "comment"
+    t.bigint "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_emails_on_person_id"
+  end
+
+  create_table "people", force: :cascade do |t|
+    t.string "salutation"
+    t.string "first_name", null: false
+    t.string "middle_name"
+    t.string "last_name", null: false
+    t.string "ssn"
+    t.string "birth_date"
+    t.text "comment"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_people_on_user_id"
+  end
+
+  create_table "phones", force: :cascade do |t|
+    t.string "phone_number", null: false
+    t.text "comment"
+    t.bigint "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_phones_on_person_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -27,4 +71,8 @@ ActiveRecord::Schema.define(version: 2022_05_24_053358) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "addresses", "people"
+  add_foreign_key "emails", "people"
+  add_foreign_key "people", "users"
+  add_foreign_key "phones", "people"
 end
