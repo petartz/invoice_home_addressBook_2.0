@@ -1,0 +1,90 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ *= require foundation_and_overrides
+
+ */
+
+.add-button {
+  position: fixed;
+  bottom: 20px;
+  left: 10px;
+  z-index: 1;
+}
+
+.button-style {
+  font-size: large;
+  padding: .5em;
+  border-radius: 1em;
+  background-color: #EDE0D4;
+  border: solid 1px rgb(209, 163, 111);
+  border-radius: 5px;
+}
+
+@media (max-width: 638px) {
+  .addClient {
+    position: fixed;
+    z-index: 9999;
+    height: 75%;
+    background-color: #EDE0D4;
+    padding: 3em;
+    border-radius: 0.2em;
+    overflow-y: scroll;
+
+  }
+}
+.addClient.closed {
+  height: 0%;
+}
+.addClient {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color:rgba(24,24,24,.88);
+  overflow-y: scroll;
+  transition: 0.5s;
+}
+
+#menu-close {
+  position: absolute;
+  top: 25px;
+  right: 20px;
+  width: 50px;
+  height: auto;
+  fill: white;
+
+}
+
+.add-client-form{
+  color: white;
+  padding: 2em;
+  margin: auto;
+  margin-top: 5em;
+  margin-bottom: 1em;
+  max-width: 50%;
+
+  label {
+    color: white;
+  }
+}
+
+.error-form{
+  color: white;
+  padding: 2em;
+  margin: auto;
+  max-width: 50%;
+}

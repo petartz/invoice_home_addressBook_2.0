@@ -4,7 +4,7 @@ class Person < ApplicationRecord
   has_many :addresses
   has_many :emails
 
-  validates :salutation, inclusion: {in: ["Mr.", "Mrs.", "Ms."]}
+  # validates :salutation, inclusion: {in: ["Mr.", "Mrs.", "Ms."]}
   validates :first_name, presence: true
   validates :last_name, presence: true
 

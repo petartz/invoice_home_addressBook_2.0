@@ -12,12 +12,12 @@ module Api
       end
 
       def create
-        person = current_user.people.new(person_params)
+        person = Person.new(person_params)
 
         if person.save
-          render json: current_user.people.new(person)
+          render json: person
         else
-          render json: {error: person.errors.mesages}, status:422
+          render json: {error: person.errors.messages}, status:422
         end
       end
 
@@ -27,17 +27,18 @@ module Api
         if person.update(person_params)
           render json: current_user.people.new(person)
         else
-          render json: {error: person.errors.mesages}, status:422
+          render json: {error: person.errors.messages}, status:422
         end
       end
 
       def destroy
-        person = current_user.people.find(params[:id])
+        puts(person_params)
+        person = current_user.people.find(person_params)
 
         if person.destroy
           head :no_content
         else
-          render json: {error: person.errors.mesages}, status:422
+          render json: {error: person.errors.messages}, status:422
         end
       end
 
@@ -48,7 +49,7 @@ module Api
       end
 
       def person_params
-        params.require(:person).permit(:salutation, :first_name, :middle_name, :last_name, :ssn, :birth_date, :comment)
+        params.require(:person).permit(:salutation, :first_name, :middle_name, :last_name, :ssn, :birth_date, :comment, :user_id)
       end
 
     end

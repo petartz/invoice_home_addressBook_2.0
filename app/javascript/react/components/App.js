@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import getCurrentUser from "../../../helpers/getCurrentUser.js";
-import ClientsMain from "./clientComponents/ClientsMain.js";
-import ClientShow from "./clientComponents/ClientShow.js";
+import ClientsMain from "./clientComponents/mainPage/ClientsMain.js";
+import ClientShow from "./clientComponents/mainPage/ClientShow.js";
 
 export const App = (props) => {
   const [currentUser, setCurrentUser] = useState(undefined)
