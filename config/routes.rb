@@ -6,9 +6,9 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users, only: [:index]
       resources :people, only: [:index, :show, :update, :create, :destroy]
-      resources :addresses, only: [:index, :update, :create, :destroy]
-      resources :emails, only: [:index, :update, :create, :destroy]
-      resources :phones, only: [:index, :update, :create, :destroy]
+      resources :addresses, only: [:index, :show, :update, :create, :destroy]
+      resources :emails, only: [:index, :show, :update, :create, :destroy]
+      resources :phones, only: [:index, :show, :update, :create, :destroy]
     end
   end
 
