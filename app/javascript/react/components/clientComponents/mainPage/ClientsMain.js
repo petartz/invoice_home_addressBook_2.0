@@ -51,7 +51,7 @@ const ClientsMain = (props) => {
         throw error
     } else {
       const formBody = await response.json()
-      console.log(formBody)
+
       setClients([formBody, ...clients])
       setErrors([])
       return true
@@ -63,7 +63,7 @@ const ClientsMain = (props) => {
 
   const deleteClient = async (clientId) => {
     try {
-      const response = await fetch(`/api/v1/people`, {
+      const response = await fetch(`/api/v1/people/${clientId}`, {
         method: "DELETE",
         headers: new Headers({
           "Content-Type": "application/json"
@@ -80,29 +80,42 @@ const ClientsMain = (props) => {
         const error = new Error(errorMessage)
         throw(error)
       }
+      const updatedClients = clients.filter(client => client.id != clientId)
+      setClients(updatedClients)
     } catch (error) {
       return console.error(`Error in fetch: ${error.message}`)
     }
   }
-  const editClient = async (formPayLoad) => {
+
+  const editClient = async (editedClient) => {
+    editedClient.user_id = props.user.id
     try {
-      const response = await fetch(`/api/v1/people`, {
-        method: "PUT",
+      const response = await fetch(`/api/v1/people/${editedClient.id}`, {
+        method: "PATCH",
         headers: new Headers({
           "Content-Type": "application/json"
         }),
-        body: JSON.stringify(formPayLoad)
+        body: JSON.stringify(editedClient)
       })
       if (!response.ok) {
         if (response.status === 422) {
           const body = await response.json()
-          const newErrors = translateServerErrors(body.errors)
+          console.log(body)
+          const newErrors = translateServerErrors(body.error)
+          console.log(newErrors)
           setErrors(newErrors)
         }
         const errorMessage = `${response.status} (${response.statusText})`
         const error = new Error(errorMessage)
         throw(error)
       }
+      const replacedClient = clients.find(client => client.id === editedClient.id)
+      const replacedIndex = clients.indexOf(replacedClient)
+      const allClients = clients.filter(client => client.id != editedClient.id)
+      allClients.splice(replacedIndex, 0, editedClient)
+
+      setErrors([])
+      setClients(allClients)
     } catch (error) {
       return console.error(`Error in fetch: ${error.message}`)
     }
@@ -110,6 +123,12 @@ const ClientsMain = (props) => {
 
   const toggleAdd = () => {
     if (props.user){
+      let client_id = parseInt(document.getElementById('addClient').classList[2])
+      console.log(client_id)
+      if (typeof client_id == "number" && !isNaN(client_id)){
+        document.getElementById('addClient').classList.toggle(client_id)
+        document.getElementById('addClient').classList.toggle('edit')
+      }
       document.getElementById('addClient').classList.toggle('closed')
     } else {
       alert("Sign in to add clients!")
@@ -121,14 +140,14 @@ const ClientsMain = (props) => {
     <div>
       <button className="add-button button-style" onClick={toggleAdd}>Add Client</button>
       <div className="addClient closed" id="addClient">
-          <div className="menu-close" onClick={toggleAdd}>
-            {MenuCloseIcon}
-          </div>
-          <div className="error-form">
-            <ErrorList errors={errors}/>
-          </div>
-          <NewClientForm addClient={addClient}/>
+        <div className="menu-close" onClick={toggleAdd}>
+          {MenuCloseIcon}
         </div>
+        <div className="error-form">
+          <ErrorList errors={errors}/>
+        </div>
+        <NewClientForm addClient={addClient} editClient={editClient}/>
+      </div>
       <table>
         <thead>
           <tr>
@@ -149,6 +168,7 @@ const ClientsMain = (props) => {
             return (
                 <ClientTile
                   key={client.id}
+                  user={props.user}
                   deleteClient={deleteClient}
                   editClient={editClient}
                   client={client}

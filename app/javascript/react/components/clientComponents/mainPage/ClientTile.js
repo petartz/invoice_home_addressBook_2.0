@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"
-import NewClientForm from "./NewClientForm.js";
 
 const ClientTile = props => {
   const { id, salutation, first_name, middle_name, last_name, ssn, birth_date, comment } = props.client
@@ -9,12 +8,14 @@ const ClientTile = props => {
     props.deleteClient(id)
   }
 
-  const handleEditClick = () => {
-
-  }
-
   const toggleEditMenu = () => {
-
+    if (props.user){
+      document.getElementById('addClient').classList.toggle(`closed`)
+      document.getElementById('addClient').classList.toggle(`edit`)
+      document.getElementById('addClient').classList.toggle(`${id}`)
+    } else {
+      alert("Sign in to edit clients!")
+    }
   }
 
   return(

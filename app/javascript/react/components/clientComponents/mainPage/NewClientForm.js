@@ -33,7 +33,14 @@ const NewClientForm = props => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const success = await props.addClient(newClient)
+    let success = null
+    const modalForm = document.getElementById("addClient")
+    if (modalForm.classList.contains("edit")){
+      newClient.id = parseInt(modalForm.classList[2])
+      success = await props.editClient(newClient)
+    } else {
+      success = await props.addClient(newClient)
+    }
     if(success){
       clearForm()
     }

@@ -13,7 +13,6 @@ module Api
 
       def create
         person = Person.new(person_params)
-
         if person.save
           render json: person
         else
@@ -21,35 +20,35 @@ module Api
         end
       end
 
-      def update
-        person = current_user.people.find(params[:id])
-
-        if person.update(person_params)
-          render json: current_user.people.new(person)
-        else
-          render json: {error: person.errors.messages}, status:422
-        end
-      end
-
       def destroy
-        puts(person_params)
-        person = current_user.people.find(person_params)
+        person = Person.find(params[:id])
 
-        if person.destroy
+        if person.destroy!
           head :no_content
         else
           render json: {error: person.errors.messages}, status:422
         end
       end
 
+      def update
+        person = Person.find(params[:id])
+
+        if person.update(person_params)
+          render json: person
+        else
+          render json: {error: person.errors.messages}, status:422
+        end
+      end
+
+
       private
       # Use callbacks to share common setup or constraints between actions.
       def set_person
-        @person = current_user.people.find(params[:id])
+        person = current_user.people.find(params[:id])
       end
 
       def person_params
-        params.require(:person).permit(:salutation, :first_name, :middle_name, :last_name, :ssn, :birth_date, :comment, :user_id)
+        params.require(:person).permit(:salutation, :first_name, :middle_name, :last_name, :ssn, :birth_date, :comment, :user_id, :id)
       end
 
     end

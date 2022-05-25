@@ -21,6 +21,16 @@ module Api
         end
       end
 
+      def destroy
+        address = current_user.people.find(params[:id]).addresses
+
+        if address.destroy
+          head :no_content
+        else
+          render json: {error: address.errors.mesages}, status:422
+        end
+      end
+
       def update
         address = current_user.people.find(params[:id]).addresses
 
@@ -31,15 +41,6 @@ module Api
         end
       end
 
-      def destroy
-        address = current_user.people.find(params[:id]).addresses
-
-        if address.destroy
-          head :no_content
-        else
-          render json: {error: address.errors.mesages}, status:422
-        end
-      end
 
       private
       # Use callbacks to share common setup or constraints between actions.
