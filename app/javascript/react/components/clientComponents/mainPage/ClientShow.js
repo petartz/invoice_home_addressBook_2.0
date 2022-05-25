@@ -60,7 +60,18 @@ const ClientShow = props => {
 
   return (
     <div className="client-data">
-
+      <div>
+        Addresses
+        {clientAddresses}
+      </div>
+      <div>
+        Emails
+        {clientEmails}
+      </div>
+      <div>
+        Phone Numbers
+        {clientPhoneNumbers}
+      </div>
     </div>
   )
 }
